@@ -3,16 +3,18 @@ class Solution {
         int[] result = new int[nums1.length];
         for(int i=0;i<nums1.length;i++){
             result[i]=-1;
-            inner:for(int j=0;j<nums2.length;j++){
-                if(nums2[j]==nums1[i]){
-                    j++;
-                    while(j<nums2.length){
-                        if(nums2[j] > nums1[i]){
-                            result[i] = nums2[j];
-                            break inner;
-                        }
-                        j++;
+            Stack<Integer> temp = new Stack<>();
+            for(int j=nums2.length-1;j>=0;j--){
+                if(nums2[j] > nums1[i]){
+                    temp.push(nums2[j]);
+                }
+                if(nums2[j] == nums1[i]){
+                    if(temp.isEmpty()){
+                        result[i] = -1;
+                    }else{
+                        result[i] = temp.pop();
                     }
+                    break;
                 }
             }
         }
