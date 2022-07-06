@@ -100,7 +100,7 @@ class Solution{
         System.arraycopy(a,0,ans,0,n);
         System.arraycopy(b,0,ans,n,m);
         
-        for(int i=(ans.length);i>=0;i--){
+        for(int i=(ans.length/2)+1;i>=0;i--){
             heapify(ans,ans.length-1,i);
         }
         
