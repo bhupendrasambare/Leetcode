@@ -1,35 +1,27 @@
 class Solution {
     public boolean makesquare(int[] matchsticks) {
+        if(matchsticks == null || matchsticks.length == 0)return false;
+        int sum =0;
+        for(int num:matchsticks)sum+=num;
         
-        int total = 0;
+        if(sum%4!=0)return false;
         
-        for (int i : matchsticks) {
-            total += i;
-        }
+        Arrays.sort(matchsticks);
         
-        if (total % 4 != 0) return false; 
-        
-        Arrays.sort(matchsticks); 
-        return match(matchsticks, matchsticks.length - 1, 0, 0, 0, 0, total / 4);
+        return dfs(matchsticks,new int[4], matchsticks.length-1,sum/4);
     }
     
-    public boolean match(int[] matchsticks, int index, int top, int bottom, int left, int right, int target) {
+    boolean dfs(int[] matchsticks, int sum[], int index,int target){
+        if(index == -1)return true;
         
-        if (top == target && bottom == target && left == target && right == target) return true;
-
-        if (top > target || bottom > target || left > target || right > target) return false;
-                        
-        int val = matchsticks[index];
-        
-        boolean t = match(matchsticks, index - 1, top + val, bottom, left, right, target);
-        if (t) return true;
-        boolean b = match(matchsticks, index - 1, top, bottom + val, left, right, target);
-        if (b) return true;
-        boolean l = match(matchsticks, index - 1, top, bottom, left + val, right, target);
-        if (l) return true;
-        boolean r = match(matchsticks, index - 1, top, bottom, left, right + val, target);
-        if (r) return true;
-        
+        for(int i=0;i<4;i++){
+            if((sum[i] + matchsticks[index]>target) || (i>0 && sum[i] == sum[i-1]))continue;
+            
+            sum[i]+=matchsticks[index];
+            
+            if(dfs(matchsticks,sum,index-1,target))return true;
+            sum[i]-= matchsticks[index];
+        }
         return false;
     }
 }
